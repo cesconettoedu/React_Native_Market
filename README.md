@@ -1,4 +1,4 @@
-# Ed's Market List
+# Ed's Market
 
 ### Its basically a ToDo List , but supercharged, using Supabase as a Database to store the tasks, so my wife and I can update the list in real time, editing it on my Android or her IOS.
 
