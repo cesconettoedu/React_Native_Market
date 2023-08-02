@@ -1,15 +1,16 @@
 {
   "expo": {
-    "name": "React_Native_Market",
-    "slug": "React_Native_Market",
+    "name": "Eds Market",
+    "slug": "eds-market",
+    "description": "This is my list that i have to buy",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/eulogoSquareTodo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/eulogoSquareTodoLoad.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,12 +20,24 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/eulogoSquareTodo.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.cesconettoedu.edsmarket"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bc52da42-9736-4ebc-9352-e9f421f4e592"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/bc52da42-9736-4ebc-9352-e9f421f4e592"
     }
   }
 }
