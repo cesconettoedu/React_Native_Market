@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList} from "react-native";
 import { supabase } from "../supabase/supabase";
 import Task from './Task';
+import AddFoto from './AddFoto';
 
 function Any() {
   const [allList, setAllList] = useState();
@@ -23,7 +24,7 @@ function Any() {
   },[allList])
 
   return (
-
+    <>
     <View style={styles.any}>
       <Text style={styles.title}>{count}  items to buy in total</Text>
       
@@ -32,9 +33,13 @@ function Any() {
         data={allList}
         renderItem={({ item }) => (
           <Task data={item}/> 
-        )} 
-      /> 
+          )} 
+          /> 
+      
     </View>
+    <AddFoto/>
+ 
+    </>
   )
 }
 
@@ -43,7 +48,7 @@ export default Any
 const styles = StyleSheet.create({
   any: {
     backgroundColor: '#AEB6BD',
-    height: Platform.OS === 'ios'? 550: 450,
+    height: Platform.OS === 'ios'? 550: 400,
     borderRadius: 5
   },
   title: {

@@ -42,7 +42,7 @@ export default Dollarama
 const styles = StyleSheet.create({
   any: {
     backgroundColor: '#008751',
-    height: Platform.OS === 'ios'? 550: 450,
+    height: Platform.OS === 'ios'? 550: 400,
     borderRadius: 5
   },
   title: {

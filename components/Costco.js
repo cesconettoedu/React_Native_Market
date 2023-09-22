@@ -42,7 +42,7 @@ export default Costco
 const styles = StyleSheet.create({
   any: {
     backgroundColor: '#F35230',
-    height: Platform.OS === 'ios'? 550: 450,
+    height: Platform.OS === 'ios'? 550: 400,
     borderRadius: 5
   },
   title: {

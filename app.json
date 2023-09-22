@@ -38,6 +38,14 @@
     },
     "updates": {
       "url": "https://u.expo.dev/bc52da42-9736-4ebc-9352-e9f421f4e592"
-    }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ]
+    ]
   }
 }

@@ -42,7 +42,7 @@ export default Any
 const styles = StyleSheet.create({
   any: {
     backgroundColor: '#48A8F8',
-    height: Platform.OS === 'ios'? 550: 450,
+    height: Platform.OS === 'ios'? 550: 400,
     borderRadius: 5
   },
   title: {
