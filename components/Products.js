@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
 import { Camera, CameraType } from 'expo-camera';
 import { supabase } from "../supabase/supabase";
-import ImgModal from "./ImgModal";
-import xRed from "../assets/xRed.png"
 
 function Products() {
   const [openCamera, setOpenCamera] = useState(false);
@@ -94,16 +92,12 @@ function Products() {
   
   return (
     <>
-
       {!openCamera &&
-        <>
+      <>
         <View style={styles.listCont}>
-                
-
-          <FlatList
-            
+    
+          <FlatList      
             data={allItens}
-           
             renderItem={ ({ item }) => (
               
               <View key={item.id} style={styles.itemSingle}>
@@ -113,11 +107,14 @@ function Products() {
                   }}
                 >
                    {/* {console.log(single)}  */}
-                  <Text style={styles.productName}>{item.prodName}</Text>
-                  <Image source={{uri: `${item.uri}`}}
-                    width={90}
+                  <Text style={styles.productName} numberOfLines={1}>{item.prodName}</Text>
+                  <Image 
+                    source={{uri: `${item.uri}`}}
+                    width={100}
                     height={115}
                     borderRadius={8}
+                    borderWidth={1}
+                    borderColor={'rgb(90, 90, 90)'}
                     alt="error"
                     />
                 </TouchableOpacity>
@@ -131,62 +128,36 @@ function Products() {
               transparent={false}
               animationType="slide"
           >
-      <SafeAreaView style={styles.modalImageCont}>
-              
-              
+            <SafeAreaView style={styles.modalImageCont}>        
               <Image 
                 style={styles.modalImage}
                 source={{uri: `${single.uri}`}}
-
                 borderRadius={8}
+                borderWidth={1}
+                borderColor={'rgb(90, 90, 90)'}
                 alt="error"
-                />
+              />
               <Text style={styles.modalTitle}>{single.prodName}</Text>
 
-        
-          
-        
-       
-
-        <View style={{flexDirection: 'row'}}>
-
-          
-          <TouchableOpacity style={styles.button} onPress={() => {deleteProd(single.id); setVisibleImgModal(false)}}>
-            <Text style={styles.takePic}>delete</Text>
-          </TouchableOpacity>
-      
-          <Text style={{alignSelf: 'center'}}>OR</Text>
-         
-          <TouchableOpacity style={styles.button} onPress={() => setVisibleImgModal(false)}>
-            <Text style={styles.takePic}>close</Text>       
-          </TouchableOpacity>
-         
-
-        </View>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </SafeAreaView>
-
+              <View style={{flexDirection: 'row', top: 100}}>
+                <TouchableOpacity style={styles.button} onPress={() => {deleteProd(single.id); setVisibleImgModal(false)}}>
+                  <Text style={styles.takePic}>delete</Text>
+                </TouchableOpacity>
+                <Text style={{alignSelf: 'center'}}>OR</Text>
+                <TouchableOpacity style={styles.button} onPress={() => setVisibleImgModal(false)}>
+                  <Text style={styles.takePic}>close</Text>       
+                </TouchableOpacity>
+              </View>
+            </SafeAreaView>
           </Modal>
+
         </View>
 
         <TouchableOpacity onPress={() => setOpenCamera(true)}>
           <Text style={styles.title}>OPEN CAMERA</Text>
         </TouchableOpacity>
         
-      
-        </>
+      </>
       }
 
       {openCamera && 
@@ -203,6 +174,8 @@ function Products() {
               </TouchableOpacity> */}
             </View>
           </Camera>
+
+          <View style={styles.prevTakeBtn}>         
             <View style={styles.previewPic}>
               <Image 
                     source={{uri: `${image}`}}
@@ -212,9 +185,10 @@ function Products() {
                     alt="error"
               />
             </View>
-              <TouchableOpacity  onPress={takePicture}>
-                <Text style={styles.takePic}>TAKE PIC</Text>
-              </TouchableOpacity>
+            <TouchableOpacity  onPress={takePicture}>
+              <Text style={styles.takePic}>TAKE PIC</Text>
+            </TouchableOpacity>
+          </View>
 
           <KeyboardAvoidingView
             style={styles.keyboardAvoid}
@@ -224,10 +198,10 @@ function Products() {
             <TextInput
               style={styles.input}
               underlineColorAndroid="transparent"
-              placeholder="Product Name"
+              placeholder="Product name or description"
               placeholderTextColor="#4a4e69"
               autoCapitalize='words'
-              maxLength={20}
+              maxLength={42}
               value={newProdName}
               onChangeText={setNewProdName}
             />
@@ -270,34 +244,25 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     height: 580,
-    backgroundColor: 'gray',
-  
+    backgroundColor: 'gray', 
   },
  
   itemSingle: {
     alignSelf: "center",
-    width: 90,
-    margin: 8,
-    backgroundColor: 'lightgreen',
+    width: 100,
+    margin: 4,
+    backgroundColor: 'rgb(210, 210, 210)',
     borderRadius: 8,
   },
 
   productName: {
-    textAlign: 'center',
-    
-    
+    padding:5
   },
-
-
-
   
   container: {
     flex: 1,
     justifyContent: 'center',
   },
-
-
-
 
   title: {
     borderWidth: 1,
@@ -339,6 +304,14 @@ const styles = StyleSheet.create({
     margin: 15,
     padding: 15
   },
+
+  prevTakeBtn:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: "center",
+    margin: 20
+  },
+
   previewPic: {
     alignSelf: 'center',
     marginTop: 5,
@@ -362,7 +335,7 @@ const styles = StyleSheet.create({
 
   modalImageCont:{
     justifyContent: "center",
-     backgroundColor: 'rgba(0,0,0,.5)',
+    backgroundColor: 'rgba(0,0,0,.5)',
     height: "95%",
     margin: 10,
     borderRadius:8,
@@ -374,7 +347,7 @@ const styles = StyleSheet.create({
     height: 255
   },
   modalTitle: {
-    color: '#7FB069',
+    color: '#FFF',
     fontSize: 35,
   },
 
