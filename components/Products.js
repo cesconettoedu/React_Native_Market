@@ -149,7 +149,7 @@ function Products() {
               />
               <Text style={styles.modalTitle}>{single.prodName}</Text>
 
-              <View style={{flexDirection: 'row', top: 100}}>
+              <View style={{flexDirection: 'row', top: 100, marginBottom: 10}}>
                 <TouchableOpacity style={styles.button} onPress={() => {deleteProd(single.id); setVisibleImgModal(false)}}>
                   <Text style={styles.takePic}>delete</Text>
                 </TouchableOpacity>
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   modalImageCont:{
     justifyContent: "center",
     backgroundColor: 'rgba(0,0,0,.5)',
-    height: "95%",
+    height: "98%",
     margin: 10,
     borderRadius:8,
     alignItems: 'center',
@@ -367,12 +367,11 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     resizeMode: 'stretch',
-
-    
   },
   modalTitle: {
     color: '#FFF',
     fontSize: 35,
+    padding: 1
   },
 
 
