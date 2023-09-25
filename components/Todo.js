@@ -283,15 +283,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   addWrapper: {
-    width: 40,
-    height: 40,
+    width: 38,
+    height: 38,
     backgroundColor: '#FFF',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#C0C0C0',
     borderWidth: 1,
-    marginLeft: 15,
+    marginLeft: 5,
    
   }, 
   radioAdd: {

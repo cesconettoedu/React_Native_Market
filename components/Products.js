@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
 import { Camera, CameraType } from 'expo-camera';
 import { supabase } from "../supabase/supabase";
 import ImgModal from "./ImgModal";
+import xRed from "../assets/xRed.png"
 
 function Products() {
   const [openCamera, setOpenCamera] = useState(false);
@@ -30,15 +31,10 @@ function Products() {
   },[])
    useEffect(() => {
     getAllItens()      
-  },[openCamera])
+  },[openCamera, visibImgleModal])
 
 
-    
-  
-  
-  
-  
-  
+  // Add new prdocut to list /////////////////////////
   const addNewItem = async (storageUrl) => {
     
     const { data: Products, error } = await supabase
@@ -49,6 +45,14 @@ function Products() {
     return Products;
   };
 
+
+  // Delete Product /////////////////////////////////////
+   const deleteProd = async (id) => {
+    const { data: Products, error } = await supabase
+      .from('Products')
+      .delete()
+      .eq('id', id)
+  }
 
 
 
@@ -83,6 +87,8 @@ function Products() {
   }
   
 
+
+
   
   
   
@@ -102,9 +108,11 @@ function Products() {
               
               <View key={item.id} style={styles.itemSingle}>
                 <TouchableOpacity
-                  // onPress={() => {setVisibleImgModal(true); setSingle(item)}}
+                  onPress={() => {setVisibleImgModal(true); 
+                     setSingle(item)
+                  }}
                 >
-                  {console.log(single)}
+                   {/* {console.log(single)}  */}
                   <Text style={styles.productName}>{item.prodName}</Text>
                   <Image source={{uri: `${item.uri}`}}
                     width={90}
@@ -118,21 +126,41 @@ function Products() {
                numColumns={3}
           />
           
-          {/* <Modal
+          <Modal
               visible={visibImgleModal}
-              transparent={true}
-              onRequestClose={() => setVisibleImgModal(false)}
+              transparent={false}
               animationType="slide"
           >
-            <ImgModal
+      <SafeAreaView style={styles.modalImageCont}>
               
-              title={single.prodName}
-              url={single.uri}
-              handleClose={() => setVisibleImgModal(false)}
-            />
-          </Modal> */}
+              
+              <Image 
+                style={styles.modalImage}
+                source={{uri: `${single.uri}`}}
 
+                borderRadius={8}
+                alt="error"
+                />
+              <Text style={styles.modalTitle}>{single.prodName}</Text>
 
+        
+          
+        
+       
+
+        <View style={{flexDirection: 'row'}}>
+
+          
+          <TouchableOpacity style={styles.button} onPress={() => {deleteProd(single.id); setVisibleImgModal(false)}}>
+            <Text style={styles.takePic}>delete</Text>
+          </TouchableOpacity>
+      
+          <Text style={{alignSelf: 'center'}}>OR</Text>
+         
+          <TouchableOpacity style={styles.button} onPress={() => setVisibleImgModal(false)}>
+            <Text style={styles.takePic}>close</Text>       
+          </TouchableOpacity>
+         
 
         </View>
 
@@ -140,9 +168,23 @@ function Products() {
 
 
 
+
+
+
+
+
+
+
+
+        </SafeAreaView>
+
+          </Modal>
+        </View>
+
         <TouchableOpacity onPress={() => setOpenCamera(true)}>
           <Text style={styles.title}>OPEN CAMERA</Text>
         </TouchableOpacity>
+        
       
         </>
       }
@@ -268,15 +310,15 @@ const styles = StyleSheet.create({
   },
   camera: {
     alignSelf: 'center',
-  
-    width: 210,
-    height: Platform.OS === 'ios'? 550: 210,
+    width: 250,
+    height: Platform.OS === 'ios'? 550: 250,
   },
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'transparent',
     margin: 64,
+    borderRadius: 20,
   },
   button: {
     flex: 1,
@@ -314,6 +356,26 @@ const styles = StyleSheet.create({
     borderColor: "#4a4e69",
     borderWidth: 1,
     paddingLeft: 10
+  },
+
+
+
+  modalImageCont:{
+    justifyContent: "center",
+     backgroundColor: 'rgba(0,0,0,.5)',
+    height: "95%",
+    margin: 10,
+    borderRadius:8,
+    alignItems: 'center',
+  },
+  modalImage: {
+    margin: 10,
+    width: '94%',
+    height: 255
+  },
+  modalTitle: {
+    color: '#7FB069',
+    fontSize: 35,
   },
 
 

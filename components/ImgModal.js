@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     bottom: 40
   },
+
   imgOpen: {
     left: 17,
     width: '90%',
     height: '55%'
   }
-
 
 })
