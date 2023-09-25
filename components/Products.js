@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList, Image, KeyboardAvoidingView, TextInput } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
 import { Camera, CameraType } from 'expo-camera';
 import { supabase } from "../supabase/supabase";
+import ImgModal from "./ImgModal";
+import { useHeaderHeight } from '@react-navigation/elements'
+
 
 function Products() {
   const [openCamera, setOpenCamera] = useState(false);
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
   const [allItens, setAllItens] = useState();
-  const [newProdName, setNewProdName] = useState("No name");
-  
+  const [newProdName, setNewProdName] = useState();
+  const [visibImgleModal, setVisibleImgModal] = useState(false);
+  const [single, setSingle] = useState({})
+const height = useHeaderHeight()
   
 
   // get all itens from supabase////////////////////////////////////
@@ -98,6 +103,10 @@ function Products() {
             renderItem={ ({ item }) => (
               
               <View key={item.id} style={styles.itemSingle}>
+                <TouchableOpacity
+                  onPress={() => {setVisibleImgModal(true); setSingle(item)}}
+                >
+                  {console.log(single)}
                   <Text style={styles.productName}>{item.prodName}</Text>
                   <Image source={{uri: `${item.uri}`}}
                     width={90}
@@ -105,12 +114,28 @@ function Products() {
                     borderRadius={8}
                     alt="error"
                     />
+                </TouchableOpacity>
               </View>
               )}    
                numColumns={3}
           />
           
-        
+          {/* <Modal
+              visible={visibImgleModal}
+              transparent={true}
+              onRequestClose={() => setVisibleImgModal(false)}
+              animationType="slide"
+          >
+            <ImgModal
+              
+              title={single.prodName}
+              url={single.uri}
+              handleClose={() => setVisibleImgModal(false)}
+            />
+          </Modal> */}
+
+
+
         </View>
 
 
@@ -155,7 +180,8 @@ function Products() {
 
           <KeyboardAvoidingView
             style={styles.keyboardAvoid}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior="padding"
+            keyboardVerticalOffset={height + 40}
           >
             <TextInput
               style={styles.input}
@@ -163,7 +189,7 @@ function Products() {
               placeholder="Product Name"
               placeholderTextColor="#4a4e69"
               autoCapitalize='words'
-              maxLength={30}
+              maxLength={20}
               value={newProdName}
               onChangeText={setNewProdName}
             />
@@ -178,7 +204,7 @@ function Products() {
                               
               }}
             >
-            <Text style={styles.takePic}>Submit</Text>
+            <Text style={styles.takePic}>Save</Text>
           </TouchableOpacity>
         </View>
       }
@@ -285,4 +311,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 10
   },
+
+  keyboardAvoid:{
+    
+  }
 });
