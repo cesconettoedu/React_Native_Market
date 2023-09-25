@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
+import { StyleSheet, Text, View, Alert, TouchableOpacity, SafeAreaView, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
 import { Camera, CameraType } from 'expo-camera';
 import { supabase } from "../supabase/supabase";
 
@@ -8,10 +8,11 @@ function Products() {
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
   const [allItens, setAllItens] = useState();
-  const [newProdName, setNewProdName] = useState();
+  const [newProdName, setNewProdName] = useState("");
   const [visibImgleModal, setVisibleImgModal] = useState(false);
   const [single, setSingle] = useState({})
 
+  
   
 
   // get all itens from supabase////////////////////////////////////
@@ -33,8 +34,28 @@ function Products() {
 
 
   // Add new prdocut to list /////////////////////////
+  const toAddNewItem =(data) =>{
+    if(image !== null ){
+      addNewItem(data);
+      setOpenCamera(false); 
+    } else {
+      Alert.alert(
+        'Alert',
+        'Please take a photo',
+        [
+          {
+            text: 'Close',
+            onDismiss: () => Alert.alert('Cancel Pressed'),
+            style: 'cancel',
+          },
+        ],
+        
+      );
+    }
+  }
+
+
   const addNewItem = async (storageUrl) => {
-    
     const { data: Products, error } = await supabase
     .from("Products")
     .insert([
@@ -51,11 +72,6 @@ function Products() {
       .delete()
       .eq('id', id)
   }
-
-
-
-
-
 
   
 // Camera  to work ///////////////////////////////////////////////////////////
@@ -123,6 +139,7 @@ function Products() {
                numColumns={3}
           />
           
+          {/* ////// MODAL WHEN CLICK O LIST /////////////////////// */}
           <Modal
               visible={visibImgleModal}
               transparent={false}
@@ -150,6 +167,8 @@ function Products() {
               </View>
             </SafeAreaView>
           </Modal>
+
+
 
         </View>
 
@@ -179,14 +198,14 @@ function Products() {
             <View style={styles.previewPic}>
               <Image 
                     source={{uri: `${image}`}}
-                    width={80}
-                    height={110}
-                    borderRadius={8}
+                    width={110}
+                    height={130}
+                    borderRadius={5}
                     alt="error"
               />
             </View>
             <TouchableOpacity  onPress={takePicture}>
-              <Text style={styles.takePic}>TAKE PIC</Text>
+              <Text style={styles.takePic}>TAKE PHOTO</Text>
             </TouchableOpacity>
           </View>
 
@@ -211,14 +230,21 @@ function Products() {
           <View style={{flexDirection: 'row'}}>
 
          
-          <TouchableOpacity style={styles.button} onPress={() => setOpenCamera(false)}>
+          <TouchableOpacity style={styles.button} 
+            onPress={() => {
+              setOpenCamera(false)
+              setImage(null);
+              setNewProdName('');
+            }}>
             <Text style={styles.takePic}>Cancel</Text>
           </TouchableOpacity>
           <Text style={{alignSelf: 'center'}}>OR</Text>
            <TouchableOpacity style={styles.button}
             onPress={(data) => {
-              addNewItem(data);
-              setOpenCamera(false);                    
+              toAddNewItem(data);
+              setImage(null);
+              setNewProdName('');
+                             
             }}
             >
             <Text style={styles.takePic}>Save</Text>
@@ -315,11 +341,11 @@ const styles = StyleSheet.create({
   previewPic: {
     alignSelf: 'center',
     marginTop: 5,
-    width: 80,
-    height: Platform.OS === 'ios'? 550: 110,
+    width: 112,
+    height: Platform.OS === 'ios'? 550: 132,
     borderColor: "#4a4e69",
     borderWidth: 1, 
-    borderRadius: 8
+    borderRadius: 6
   },
 
   input: {
