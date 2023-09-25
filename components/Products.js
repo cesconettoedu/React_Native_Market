@@ -3,8 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList, Image, Ke
 import { Camera, CameraType } from 'expo-camera';
 import { supabase } from "../supabase/supabase";
 import ImgModal from "./ImgModal";
-import { useHeaderHeight } from '@react-navigation/elements'
-
 
 function Products() {
   const [openCamera, setOpenCamera] = useState(false);
@@ -14,7 +12,7 @@ function Products() {
   const [newProdName, setNewProdName] = useState();
   const [visibImgleModal, setVisibleImgModal] = useState(false);
   const [single, setSingle] = useState({})
-const height = useHeaderHeight()
+
   
 
   // get all itens from supabase////////////////////////////////////
@@ -104,7 +102,7 @@ const height = useHeaderHeight()
               
               <View key={item.id} style={styles.itemSingle}>
                 <TouchableOpacity
-                  onPress={() => {setVisibleImgModal(true); setSingle(item)}}
+                  // onPress={() => {setVisibleImgModal(true); setSingle(item)}}
                 >
                   {console.log(single)}
                   <Text style={styles.productName}>{item.prodName}</Text>
@@ -151,10 +149,8 @@ const height = useHeaderHeight()
 
       {openCamera && 
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => setOpenCamera(false)}>
-        <Text style={styles.takePic}>CLOSE CAMERA</Text>
+        
 
-        </TouchableOpacity>
           <Camera style={styles.camera} type={type} ref={ref => setCamera(ref)}>
             <View style={styles.buttonContainer}>
               {/* CAMERA WILL SHOW HERE */}
@@ -181,7 +177,7 @@ const height = useHeaderHeight()
           <KeyboardAvoidingView
             style={styles.keyboardAvoid}
             behavior="padding"
-            keyboardVerticalOffset={height + 40}
+            
           >
             <TextInput
               style={styles.input}
@@ -195,17 +191,25 @@ const height = useHeaderHeight()
             />
           </KeyboardAvoidingView>
 
-          <TouchableOpacity style={styles.button}
-             
-              onPress={(data) => {
-                console.log('submit');
-                  addNewItem(data);
-                  setOpenCamera(false);
-                              
-              }}
+
+          <View style={{flexDirection: 'row'}}>
+
+         
+          <TouchableOpacity style={styles.button} onPress={() => setOpenCamera(false)}>
+            <Text style={styles.takePic}>Cancel</Text>
+          </TouchableOpacity>
+          <Text style={{alignSelf: 'center'}}>OR</Text>
+           <TouchableOpacity style={styles.button}
+            onPress={(data) => {
+              addNewItem(data);
+              setOpenCamera(false);                    
+            }}
             >
             <Text style={styles.takePic}>Save</Text>
           </TouchableOpacity>
+
+          </View>
+
         </View>
       }
 
@@ -312,7 +316,5 @@ const styles = StyleSheet.create({
     paddingLeft: 10
   },
 
-  keyboardAvoid:{
-    
-  }
+
 });
