@@ -33,7 +33,7 @@ function Products() {
   },[openCamera, visibImgleModal])
 
 
-  // Add new prdocut to list /////////////////////////
+  // Add new prdocut to list and make sure has foto on /////////////////////////
   const toAddNewItem =(data) =>{
     if(image !== null ){
       addNewItem(data);
@@ -48,12 +48,10 @@ function Products() {
             onDismiss: () => Alert.alert('Cancel Pressed'),
             style: 'cancel',
           },
-        ],
-        
+        ], 
       );
     }
   }
-
 
   const addNewItem = async (storageUrl) => {
     const { data: Products, error } = await supabase
@@ -81,8 +79,7 @@ function Products() {
   if (!permission) {
     // Camera permissions are still loading
     return <View />;
-  }
-  
+  } 
   if (!permission.granted) {
     // Camera permissions are not granted yet
     return (
@@ -101,10 +98,6 @@ function Products() {
   }
   
 
-
-
-  
-  
   
   return (
     <>
@@ -349,6 +342,8 @@ const styles = StyleSheet.create({
   },
 
   input: {
+     alignSelf: 'center',
+    width: '90%',
     borderRadius: 5,
     margin: 5,
     height: 40,
@@ -369,8 +364,11 @@ const styles = StyleSheet.create({
   },
   modalImage: {
     margin: 10,
-    width: '94%',
-    height: 255
+    width: 300,
+    height: 300,
+    resizeMode: 'stretch',
+
+    
   },
   modalTitle: {
     color: '#FFF',
