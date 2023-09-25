@@ -8,7 +8,7 @@ function Products() {
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
   const [allItens, setAllItens] = useState();
-  const [newProdName, setNewProdName] = useState("");
+  const [newProdName, setNewProdName] = useState("No name");
   
   
 
@@ -25,6 +25,9 @@ function Products() {
   useEffect(() => {
     getAllItens()      
   },[])
+   useEffect(() => {
+    getAllItens()      
+  },[openCamera])
 
 
     
@@ -86,26 +89,28 @@ function Products() {
       {!openCamera &&
         <>
         <View style={styles.listCont}>
-          <Text>Lista de Produtos</Text>
+                
 
           <FlatList
+            
             data={allItens}
+           
             renderItem={ ({ item }) => (
               
-              <View key={item.id}>
-                  <Text>{item.prodName}</Text>
+              <View key={item.id} style={styles.itemSingle}>
+                  <Text style={styles.productName}>{item.prodName}</Text>
                   <Image source={{uri: `${item.uri}`}}
-                    width={80}
-                    height={110}
+                    width={90}
+                    height={115}
                     borderRadius={8}
-                    
                     alt="error"
-                  />
+                    />
               </View>
-              )}
-              
-             
+              )}    
+               numColumns={3}
           />
+          
+        
         </View>
 
 
@@ -135,6 +140,15 @@ function Products() {
               </TouchableOpacity> */}
             </View>
           </Camera>
+            <View style={styles.previewPic}>
+              <Image 
+                    source={{uri: `${image}`}}
+                    width={80}
+                    height={110}
+                    borderRadius={8}
+                    alt="error"
+              />
+            </View>
               <TouchableOpacity  onPress={takePicture}>
                 <Text style={styles.takePic}>TAKE PIC</Text>
               </TouchableOpacity>
@@ -160,6 +174,7 @@ function Products() {
               onPress={(data) => {
                 console.log('submit');
                   addNewItem(data);
+                  setOpenCamera(false);
                               
               }}
             >
@@ -178,9 +193,39 @@ export default Products;
 
 const styles = StyleSheet.create({
   listCont:{
+    flex: 1,
+    flexWrap: "wrap",
+    padding: 10,
+    borderRadius: 5,
     height: 580,
-    backgroundColor: 'gray'
+    backgroundColor: 'gray',
+  
   },
+ 
+  itemSingle: {
+    alignSelf: "center",
+    width: 90,
+    margin: 8,
+    backgroundColor: 'lightgreen',
+    borderRadius: 8,
+  },
+
+  productName: {
+    textAlign: 'center',
+    
+    
+  },
+
+
+
+  
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+
+
+
 
   title: {
     borderWidth: 1,
@@ -191,12 +236,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 15,
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   camera: {
-    flex: 1,
+    alignSelf: 'center',
+  
+    width: 210,
+    height: Platform.OS === 'ios'? 550: 210,
   },
   buttonContainer: {
     flex: 1,
@@ -223,6 +267,16 @@ const styles = StyleSheet.create({
     margin: 15,
     padding: 15
   },
+  previewPic: {
+    alignSelf: 'center',
+    marginTop: 5,
+    width: 80,
+    height: Platform.OS === 'ios'? 550: 110,
+    borderColor: "#4a4e69",
+    borderWidth: 1, 
+    borderRadius: 8
+  },
+
   input: {
     borderRadius: 5,
     margin: 5,
