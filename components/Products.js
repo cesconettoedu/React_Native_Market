@@ -12,7 +12,7 @@ function Products() {
   const [newProdName, setNewProdName] = useState("");
   const [visibImgleModal, setVisibleImgModal] = useState(false);
   const [single, setSingle] = useState({})
-
+  const [pathFoto, setPathFoto] = useState();
   
   
 
@@ -72,6 +72,7 @@ function Products() {
   async function uploadImages(newImageUrl) {
     let filename = uuidv4();
     let pathUser =  filename + ".jpg";
+    setPathFoto(pathUser);
     let file = newImageUrl;
     let formData = new FormData();
     formData.append('Files',{
@@ -98,13 +99,24 @@ function Products() {
   }
 
   // Delete Product /////////////////////////////////////
-   const deleteProd = async (id) => {
+  const deleteProd = async (data) => {
+    // console.log("DDDDDDDDDDDd",data);
+    deleteInfo(data.id);
+    deleteStorageFile(pathFoto);
+  }
+  const deleteInfo = async (id) => {
     const { data: Products, error } = await supabase
       .from('Products')
       .delete()
       .eq('id', id)
   }
-
+  const deleteStorageFile = async (path) => {
+    
+    const { data, error } = await supabase
+    .storage
+    .from('prodImageStorage')
+    .remove([path])
+  }
   
 // Camera  to work ///////////////////////////////////////////////////////////
   const [type, setType] = useState(CameraType.back);
@@ -184,7 +196,14 @@ function Products() {
               <Text style={styles.modalTitle}>{single.prodName}</Text>
 
               <View style={{flexDirection: 'row', top: 100, marginBottom: 10}}>
-                <TouchableOpacity style={styles.button} onPress={() => {deleteProd(single.id); setVisibleImgModal(false)}}>
+                <TouchableOpacity style={styles.button} 
+                  onPress={() => {
+                    deleteProd(single); 
+                    setVisibleImgModal(false)
+                  }}>
+
+
+
                   <Text style={styles.takePic}>delete</Text>
                 </TouchableOpacity>
                 <Text style={{alignSelf: 'center'}}>OR</Text>
@@ -270,7 +289,7 @@ function Products() {
             onPress={() => {
               uploadImages(image)
               .then((data) => {
-              console.log('aaaaaaaaaa',data);
+              // console.log('aaaaaaaaaa',data);
                 toAddNewItem(data.path);
                 setImage(null);
                 setNewProdName('');
