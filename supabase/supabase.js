@@ -6,7 +6,8 @@ import { SUPABASE_URL, SUPABASE_PUBLIC_KEY } from '@env';
 const supabaseUrl = SUPABASE_URL
 const supabaseKey = SUPABASE_PUBLIC_KEY
 
-const supabase = createClient(supabaseUrl, supabaseKey, {
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY
+, {
   auth: {
     persistSession: false,
     
@@ -15,3 +16,4 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
 
 
 export { supabase };
+
