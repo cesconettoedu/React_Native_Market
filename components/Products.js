@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Alert, TouchableOpacity, SafeAreaView, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
 import { Camera, CameraType } from 'expo-camera';
 import { supabase } from "../supabase/supabase";
+import { v4 as uuidv4} from 'uuid';
 
 function Products() {
   const [openCamera, setOpenCamera] = useState(false);
@@ -54,14 +55,47 @@ function Products() {
   }
 
   const addNewItem = async (storageUrl) => {
+    let url = getFromStorage(storageUrl);
+    
+    // console.log(image);
+    
     const { data: Products, error } = await supabase
     .from("Products")
     .insert([
-      { prodName: newProdName, uri: image},
+      { prodName: newProdName, uri: image, fullUrl: url},
     ]);
     return Products;
   };
 
+
+  // transform image //////
+  async function uploadImages(newImageUrl) {
+    let filename = uuidv4();
+    let pathUser =  filename + ".jpg";
+    let file = newImageUrl;
+    let formData = new FormData();
+    formData.append('Files',{
+      uri: file,
+      name: filename,
+      type: "image/jpg",
+    });
+    const { data, error } = await supabase    
+      .storage
+      .from('prodImageStorage')
+      .upload(pathUser, formData )
+    if(!data) {
+      console.log(error);
+    }
+    return data
+  }
+  //to get the fullUrl from Storage
+   const getFromStorage = (path) => {  
+    const { data } = supabase
+      .storage
+      .from('prodImageStorage')
+      .getPublicUrl(path)
+      return data.publicUrl   
+  }
 
   // Delete Product /////////////////////////////////////
    const deleteProd = async (id) => {
@@ -115,10 +149,10 @@ function Products() {
                      setSingle(item)
                   }}
                 >
-                   {/* {console.log(single)}  */}
+                   {/* {console.log(item)}  */}
                   <Text style={styles.productName} numberOfLines={1}>{item.prodName}</Text>
                   <Image 
-                    source={{uri: `${item.uri}`}}
+                    source={{uri: `${item.fullUrl}`}}
                     width={100}
                     height={115}
                     borderRadius={8}
@@ -233,10 +267,14 @@ function Products() {
           </TouchableOpacity>
           <Text style={{alignSelf: 'center'}}>OR</Text>
            <TouchableOpacity style={styles.button}
-            onPress={(data) => {
-              toAddNewItem(data);
-              setImage(null);
-              setNewProdName('');
+            onPress={() => {
+              uploadImages(image)
+              .then((data) => {
+              console.log('aaaaaaaaaa',data);
+                toAddNewItem(data.path);
+                setImage(null);
+                setNewProdName('');
+              })
                              
             }}
             >
