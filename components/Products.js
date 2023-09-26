@@ -34,7 +34,7 @@ function Products() {
   },[openCamera, visibImgleModal])
 
 
-  // Add new prdocut to list and make sure has foto on /////////////////////////
+  // Add new product to list and make sure has foto on /////////////////////////
   const toAddNewItem =(data) =>{
     if(image !== null ){
       addNewItem(data);
@@ -53,12 +53,9 @@ function Products() {
       );
     }
   }
-
+      //to add but first check with the func above//
   const addNewItem = async (storageUrl) => {
     let url = getFromStorage(storageUrl);
-    
-    // console.log(image);
-    
     const { data: Products, error } = await supabase
     .from("Products")
     .insert([
@@ -67,8 +64,7 @@ function Products() {
     return Products;
   };
 
-
-  // transform image //////
+  // transform image name to work with storage//////
   async function uploadImages(newImageUrl) {
     let filename = uuidv4();
     let pathUser =  filename + ".jpg";
@@ -98,27 +94,32 @@ function Products() {
       return data.publicUrl   
   }
 
-  // Delete Product /////////////////////////////////////
+
+
+  /////////////////////// Delete Product /////////////////////////////////////
   const deleteProd = async (data) => {
     // console.log("DDDDDDDDDDDd",data);
     deleteInfo(data.id);
     deleteStorageFile(pathFoto);
   }
+    ////delete row from Table///
   const deleteInfo = async (id) => {
     const { data: Products, error } = await supabase
       .from('Products')
       .delete()
       .eq('id', id)
   }
+    ///delete image saved at Storage Supabase ////
   const deleteStorageFile = async (path) => {
-    
     const { data, error } = await supabase
     .storage
     .from('prodImageStorage')
     .remove([path])
   }
   
-// Camera  to work ///////////////////////////////////////////////////////////
+
+
+///////////////// Camera  to work ///////////////////////////////////////////////////////////
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   
