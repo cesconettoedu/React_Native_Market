@@ -38,23 +38,10 @@ function Products() {
 
   // Add new product to list and make sure has foto on /////////////////////////
   const toAddNewItem =(data) =>{
-    if(image !== null ){
       addNewItem(data);
       setOpenCamera(false); 
-    } else {
-      Alert.alert(
-        'Alert',
-        'Please take a photo',
-        [
-          {
-            text: 'Close',
-            onDismiss: () => Alert.alert('Cancel Pressed'),
-            style: 'cancel',
-          },
-        ], 
-      );
-    }
   }
+  
       //to add but first check with the func above//
   const addNewItem = async (storageUrl) => {
     let url = getFromStorage(storageUrl);
@@ -325,14 +312,29 @@ function Products() {
          
            <TouchableOpacity style={styles.button}
             onPress={() => {
-              uploadImages(image)
-              .then((data) => {
-              // console.log('aaaaaaaaaa',data);
-                toAddNewItem(data.path);
-                setImage(null);
-                setNewProdName('');
-              })
-                             
+              if(image === null){
+                Alert.alert(
+                  'Alert',
+                  'Please choose a photo',
+                  [
+                    {
+                      text: 'Close',
+                      onDismiss: () => Alert.alert('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                  ], 
+                );
+              } else {
+
+                uploadImages(image)
+                .then((data) => {
+                  // console.log('aaaaaaaaaa',data);
+                  toAddNewItem(data.path);
+                  setImage(null);
+                  setNewProdName('');
+                })
+                
+              }
             }}
             >
             <Text style={styles.takePic}>Save</Text>
