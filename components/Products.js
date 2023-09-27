@@ -252,7 +252,7 @@ function Products() {
       {openCamera && 
         <View style={styles.container}>
         
-
+          <Text style={styles.live}> ● Live</Text>
           <Camera style={styles.camera} type={type} ref={ref => setCamera(ref)}>
             <View style={styles.buttonContainer}>
               {/* CAMERA WILL SHOW HERE */}
@@ -387,6 +387,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 15,
     padding: 5
+  },
+  live: {
+    alignSelf: 'center',
+    color: 'red',
+    zIndex: 99,
+    top: 20
   },
   camera: {
     alignSelf: 'center',
