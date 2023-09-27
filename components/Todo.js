@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, Keyboard, KeyboardAvoi
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from "../supabase/supabase";
 import RadioGroup from 'react-native-radio-buttons-group';
-
+import AddFoto from './AddFoto';
 
 import any from "../assets/logo/any11.png"
 import costco from "../assets/logo/costco1.png"
@@ -155,8 +155,8 @@ export default function Todo() {
           {showDollarama && <Dollarama/>}
           {showCostco && <Costco/>}
           
+        <AddFoto/>
         </View>
-
 
 
       {/* task to save */}

@@ -6,6 +6,10 @@ import { v4 as uuidv4} from 'uuid';
 import * as ImagePicker from "expo-image-picker";
 import bgImage from '../assets/general/waitImage.png'
 
+// import { useFocusEffect } from '@react-navigation/native';
+
+
+
 function Products() {
   const [openCamera, setOpenCamera] = useState(false);
   const [camera, setCamera] = useState(null);
@@ -17,6 +21,28 @@ function Products() {
   const [pathFoto, setPathFoto] = useState();
   
   
+
+  // when screen in focus run the Load Beer one time
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     setTimeout(() => { 
+  //       setLoad(false);         
+  //     }, 3000);
+  //     setLoad(true)
+  //   }, [])
+
+  // );
+
+  // const loading = () => {
+  //   setTimeout(() => { 
+  //       setLoad(false);   
+  //       getAllItens()   
+  //     }, 3000);
+  //     setLoad(true)
+  //   }
+
+
+
 
   // get all itens from supabase////////////////////////////////////
   const getAllItens = async () => {
@@ -210,9 +236,6 @@ function Products() {
                     deleteProd(single); 
                     setVisibleImgModal(false)
                   }}>
-
-
-
                   <Text style={styles.takePic}>delete</Text>
                 </TouchableOpacity>
                 <Text style={{alignSelf: 'center'}}>OR</Text>

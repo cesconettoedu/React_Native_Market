@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Platform, FlatList} from "react-native";
 import { supabase } from "../supabase/supabase";
 import Task from './Task';
-import AddFoto from './AddFoto';
+
 
 function Any() {
   const [allList, setAllList] = useState();
@@ -36,9 +36,7 @@ function Any() {
           )} 
           /> 
       
-    </View>
-    <AddFoto/>
- 
+    </View> 
     </>
   )
 }
