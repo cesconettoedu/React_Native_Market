@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Alert, TouchableOpacity, SafeAreaView, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
+import { StyleSheet, Text, View, Alert,ImageBackground, TouchableOpacity, SafeAreaView, Platform, FlatList, Image, KeyboardAvoidingView, TextInput, Modal } from "react-native";
 import { Camera, CameraType } from 'expo-camera';
 import { supabase } from "../supabase/supabase";
 import { v4 as uuidv4} from 'uuid';
+import * as ImagePicker from "expo-image-picker";
+import bgImage from '../assets/general/waitImage.png'
 
 function Products() {
   const [openCamera, setOpenCamera] = useState(false);
@@ -99,8 +101,8 @@ function Products() {
   /////////////////////// Delete Product /////////////////////////////////////
   const deleteProd = async (data) => {
     // console.log("DDDDDDDDDDDd",data);
-    deleteInfo(data.id);
     deleteStorageFile(pathFoto);
+    deleteInfo(data.id);
   }
     ////delete row from Table///
   const deleteInfo = async (id) => {
@@ -143,6 +145,25 @@ function Products() {
     const data = await camera.takePictureAsync(null)
     setImage(data.uri);
   }
+
+
+
+
+
+
+  //to get image from device ////////////////////////////////////////
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [12, 16],
+      quality: 0.5,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   
 
   
@@ -218,10 +239,12 @@ function Products() {
 
 
         </View>
+        
+          <TouchableOpacity onPress={() => setOpenCamera(true)}>
+            <Text style={styles.title}>Add new Item</Text>  
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setOpenCamera(true)}>
-          <Text style={styles.title}>OPEN CAMERA</Text>
-        </TouchableOpacity>
+                         
         
       </>
       }
@@ -243,17 +266,31 @@ function Products() {
 
           <View style={styles.prevTakeBtn}>         
             <View style={styles.previewPic}>
+              <ImageBackground source={bgImage} resizeMode="cover">
+
               <Image 
                     source={{uri: `${image}`}}
                     width={110}
                     height={130}
                     borderRadius={5}
                     alt="error"
-              />
+                    />
+            </ImageBackground>
             </View>
-            <TouchableOpacity  onPress={takePicture}>
-              <Text style={styles.takePic}>TAKE PHOTO</Text>
-            </TouchableOpacity>
+
+            <View style={{flexDirection: 'column'}}>
+              
+              <TouchableOpacity  onPress={pickImage}>
+                <Text style={styles.takePic1}>Get from Device</Text>
+              </TouchableOpacity>
+              
+              <Text style={{alignSelf: 'center'}}>OR</Text>
+              
+              <TouchableOpacity  onPress={takePicture}>
+                <Text style={styles.takePic1}>Take Photo</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
 
           <KeyboardAvoidingView
@@ -285,7 +322,7 @@ function Products() {
             }}>
             <Text style={styles.takePic}>Cancel</Text>
           </TouchableOpacity>
-          <Text style={{alignSelf: 'center'}}>OR</Text>
+         
            <TouchableOpacity style={styles.button}
             onPress={() => {
               uploadImages(image)
@@ -344,11 +381,12 @@ const styles = StyleSheet.create({
   title: {
     borderWidth: 1,
     borderColor: "#C0C0C0",
-    borderRadius: 50,
+    borderRadius: 5,
     fontSize: 20,
     fontWeight: "600",
     textAlign: "center",
     margin: 15,
+    padding: 5
   },
   camera: {
     alignSelf: 'center',
@@ -381,6 +419,16 @@ const styles = StyleSheet.create({
     margin: 15,
     padding: 15
   },
+  takePic1: {
+    borderWidth: 1,
+    borderColor: "#C0C0C0",
+    borderRadius: 10,
+    fontSize: 20,
+    fontWeight: "600",
+    textAlign: "center",
+    margin: 10,
+    padding: 8
+  },
 
   prevTakeBtn:{
     flexDirection: 'row',
@@ -390,6 +438,7 @@ const styles = StyleSheet.create({
   },
 
   previewPic: {
+    
     alignSelf: 'center',
     marginTop: 5,
     width: 112,
