@@ -2,6 +2,12 @@
 
 <h4> Its basically a ToDo List , but supercharged, using Supabase as a Database to store the tasks, so my wife and I can update the list in real time, editing it on my Android or her IOS.</h4>
 
+## New Layout
+
+<img src="./assets/readmePic/new1.jpeg" width="216" height="480"> &emsp; <img src="./assets/readmePic/new2.jpeg" width="216" height="480">&emsp; <img src="./assets/readmePic/new3.jpeg" width="216" height="480">&emsp; <img src="./assets/readmePic/new4.jpeg" width="216" height="480">&emsp; <img src="./assets/readmePic/new5.jpeg" width="216" height="480">
+
+# Old Layout
+
 <h4>Logo &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; Full View</h4>
 
 <img src="./assets/readmePic/256276269-2eb4c1a6-d7cf-4657-ba0e-1745630117dd.jpg" width="216" height="480"> &emsp; <img src="./assets/readmePic/256276437-7c3ef8f8-0d4b-4c54-8f2f-c3870c7c5808.jpg" width="216" height="480">
